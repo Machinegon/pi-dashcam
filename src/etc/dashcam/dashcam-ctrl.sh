@@ -13,23 +13,32 @@
 SCRIPT=/etc/init.d/pi-dashcam.sh
 GPIO=/sys/class/gpio/
 POWERGPIO=11
+PID_FILE="/tmp/dashcam.pid"
 
 UPTIME=0
+cd $GPIO
+echo $POWERGPIO > export
 while true; do
-    if [ $UPTIME -gt 900 ]; then # 15 minutes file rotation
-        $SCRIPT restart
-    fi
+    if [ -f $PID_FILE ]; then
+        if [ $UPTIME -gt 900 ]; then # 15 minutes file rotation
+            echo "Rotating..."
+            $SCRIPT restart
+        fi
 
-    # Power is down, stop and shutdown
-    IOVAL=`cat ${GPIO}/${POWERGPIO}`
-    if [ IOVAL -eq 0 ]; then
-        $SCRIPT stop
-        break
+        # Power is down, stop and shutdown
+        IOVAL=`cat ${GPIO}gpio${POWERGPIO}/value`
+        if [ $IOVAL -eq 1 ]; then
+            echo "Power is down, stopping"
+            $SCRIPT stop
+            break
+        fi
+    else
+        echo "Waiting for $SCRIPT PID ..."
     fi
     sleep 5
-    UPTIME+=5
+    UPTIME=$((UPTIME+5))
 done
 
-
 echo "Shutting down system"
+sleep 10
 # shutdown now

@@ -15,7 +15,7 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 RPATH=/home/pi/recordings
 DAEMON=/usr/bin/raspivid
 CTRL=/etc/dashcam/dashcam-ctrl.sh
-CMD="-w 1280 -h 720 -fps 15 -b 750000 -t 0 -o $RPATH/video.h264"
+CMD="-w 1280 -h 720 -n -fps 15 -b 750000 -t 0 -o $RPATH/video.h264"
 PID_FILE="/tmp/dashcam.pid"
 LOCK="/tmp/dashcam-ctrl.lck"
 
@@ -56,7 +56,7 @@ start()
         log_daemon_msg "Controller already present, skipping" && log_end_msg 0
     else
         touch $LOCK
-        start-stop-daemon --start --user root --background --exec $CTRL
+        $CTRL >/dev/null &
     fi
 }
 
