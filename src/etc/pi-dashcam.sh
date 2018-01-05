@@ -36,8 +36,17 @@ upload()
         cd $RPATH
         log_daemon_msg "Host reachable, uploading files in $RPATH" && log_end_msg 0
         for i in $( ls ); do
+            if [ "$i" = "video.h264" ]; then
+                DATE=`date '+%Y-%m-%d_%H_%M_%S'`
+                FN="${DATE}_record.h264"
+                mv "$RPATH/video.h264" "$RPATH/$FN"
+                i=$FN
+            fi
             smbclient -t 30 -U pizero%$REMOTE_PASS //$REMOTE_IP/$REMOTE_PATH -c "put $i"
-            log_daemon_msg "File $i uploaded to target deposit" && log_end_msg 0
+            if [ $? -eq 0 ]; then
+                log_daemon_msg "File $i uploaded to target deposit" && log_end_msg 0
+                rm -f $i
+            fi
         done
     else
         log_daemon_msg "$REMOTE_IP is unreachable, upload files skipped" && log_end_msg 0

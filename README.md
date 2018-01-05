@@ -5,8 +5,7 @@ A dashcam init script for raspberry pi 2/3/zero-w
 == Pre-requisites ==
 * Raspberry pi 2/3/zero-w
 * Rapsberry pi cam
-* Micro-usb cable, soldering iron, battery source (See wiki for hardware setup)
-* smb server as remote deposit source (Optional)
+* smb server as remote deposit source
 * Rapsberry pi cam enabled and raspivid installed
 * smbclient installed
 * Debian/Ubuntu distribution with init.d
