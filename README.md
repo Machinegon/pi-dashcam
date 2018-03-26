@@ -11,7 +11,9 @@ A dashcam init script for raspberry pi 2/3/zero-w
 * Debian/Ubuntu distribution with init.d
 
 == Software installation ==
-TO DO
+* Copy pi-dashcam.sh in /etc/init.d
+* Copy dashcam-ctrl.sh in /etc/dashcam
+* Enter command: update-rc.d pi-dashcam.sh defaults 98
 
 
 == Hardware Setup ==
@@ -20,7 +22,7 @@ To achieve this, we're going to be modifying an old cellphone charger with the f
 
  * Wires
  * 3.3V voltage regulator (LD1117)
- * 550 ohms resistor
+ * 200 ohms resistor
 
  See here for circuit diagram and instructions:
   * circuit_diagram_tinycad.png (Schematics)

@@ -31,7 +31,21 @@ REMOTE_PATH=PICAM
 upload()
 {
     log_daemon_msg "Uploading files, checking host..." && log_end_msg 0
-    ping -c1 -w1 $REMOTE_IP > /dev/null
+    
+    TIMEOUT=0
+    while true; do
+        ping -c1 -w1 $REMOTE_IP > /dev/null
+        if [ $? -eq 0 ]; then
+            break
+        else
+            sleep 5
+            TIMEOUT=$((TIMEOUT+5))
+        fi
+        if [ $TIMEOUT -gt 30 ]; then
+            break
+        fi
+    done
+
     if [ $? -eq 0 ]; then
         cd $RPATH
         log_daemon_msg "Host reachable, uploading files in $RPATH" && log_end_msg 0

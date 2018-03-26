@@ -10,9 +10,9 @@
 
 # Set stop-detection gpio
 # The pi will stop recording when low and save the video
-SCRIPT=/etc/init.d/pi-dashcam.sh
+SCRIPT=/etc/init.d/pi-dashcam
 GPIO=/sys/class/gpio/
-POWERGPIO=11
+POWERGPIO=23
 PID_FILE="/tmp/dashcam.pid"
 
 UPTIME=0
@@ -28,9 +28,10 @@ while true; do
 
         # Power is down, stop and shutdown
         IOVAL=`cat ${GPIO}gpio${POWERGPIO}/value`
-        if [ $IOVAL -eq 1 ]; then
-            echo "Power is down, stopping"
+        if [ $IOVAL -eq 0 ]; then
+            echo "Power is down, stopping in 10 (s)"
             $SCRIPT stop
+            sleep 10
             shutdown now
         fi    
     else
