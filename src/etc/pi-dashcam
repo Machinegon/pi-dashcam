@@ -70,10 +70,10 @@ upload()
 # Start the recording daemon
 start()
 {
-    upload
     log_daemon_msg "Starting $DAEMON with ARGS $CMD" && log_end_msg 0
-    logger -p local0.notice -t DASHCAM "$DAEMON started with args $CMD"
+    upload
     start-stop-daemon --start --user pi --background --exec $DAEMON -- $CMD
+    logger -p local0.notice -t DASHCAM "$DAEMON started with args $CMD"
     touch $PID_FILE
     if [ -f $LOCK ]; then
         log_daemon_msg "Controller already present, skipping" && log_end_msg 0
